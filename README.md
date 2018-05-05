@@ -22,22 +22,27 @@ Google Cloud Shell built-in credentials
 Google Compute Engine built-in credentials
 
 ## Usage
-Assuming that credentials are provided 
+Assuming that credentials are provided, one can just enable the plugin:
 
 ```
 enablePlugins(GcsPlugin)
 ```
 
-### Integration with the built-in `packageBin` task
-By default, sbt-gcs is configured to upload the resulting artifact of the `packageBin` task to GCS.
+and set required settings:
 
 ```
 gcsProjectId := "my-google-cloud-project"
-
 gcsBucket := "gcs-bucket.tapad.com"
-
-enablePlugins(GcsPlugin)
 ```
+
+The location on GCS can be specfied using `gcsArtifactPath` setting. The default value is:
+
+`gs://{gcsBucket}/{releases|snapshots}/{organization}/{name}/{version}/{name}-{version}.jar`
+
+(e.g. `gs://gcs-bucket.tapad.com/snapshots/com/tapad/sbt/sbt-gcs/0.1.1-SNAPSHOT/sbt-gcs-0.1.1-SNAPSHOT.jar`)
+
+### Integration with the built-in `packageBin` task
+By default, sbt-gcs is configured to upload the resulting artifact of the `packageBin` task to GCS.
 
 Once your build is properly configured, an invocation of `gcs:publish` will build, and subsequentially publish, your artifact to GCS.
 
@@ -48,7 +53,6 @@ To use sbt-gcs in conjunction with sbt-assembly, add the following to your `proj
 
 ```
 addSbtPlugin("com.eed3sign" % "sbt-assembly" % "X.Y.Z")
-
 addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
 ```
 
