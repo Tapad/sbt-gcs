@@ -13,7 +13,7 @@ addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
 ```
 
 ### Credentials
-Authentication to Google Cloud Storagehas to be provided. The following are searched (in order) to find the Application Default Credentials:
+Authentication to Google Cloud Storage has to be provided. The following are searched (in order) to find the Application Default Credentials:
 
 * Credentials file pointed to by the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
 * Credentials provided by the Google Cloud SDK gcloud auth application-default login command
