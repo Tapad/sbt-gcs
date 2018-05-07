@@ -15,11 +15,11 @@ addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
 ### Credentials
 Authentication to Google Cloud Storagehas to be provided. The following are searched (in order) to find the Application Default Credentials:
 
-Credentials file pointed to by the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
-Credentials provided by the Google Cloud SDK gcloud auth application-default login command
-Google App Engine built-in credentials
-Google Cloud Shell built-in credentials
-Google Compute Engine built-in credentials
+* Credentials file pointed to by the `GOOGLE_APPLICATION_CREDENTIALS` environment variable
+* Credentials provided by the Google Cloud SDK gcloud auth application-default login command
+* Google App Engine built-in credentials
+* Google Cloud Shell built-in credentials
+* Google Compute Engine built-in credentials
 
 ## Usage
 Assuming that credentials are provided, one can just enable the plugin:
