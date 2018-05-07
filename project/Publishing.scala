@@ -15,20 +15,20 @@ object Publishing {
     publishArtifact in (Compile, packageDoc) := true,
     publishArtifact in (Compile, packageSrc) := true,
     homepage := Some(new URL("https://github.com/Tapad/sbt-gcs")),
-    pomExtra := {
-      <developers>
-        <developer>
-          <id>pcejrowski</id>
-          <name>Pawel Cejrowski</name>
-          <email>pawel.cejrowski@tapad.com</email>
-          <url>https://github.com/pcejrowski</url>
-        </developer>
-      </developers>
-        <scm>
-          <url>https://github.com/Tapad/sbt-gcs</url>
-          <connection>scm:git:git://github.com/Tapad/sbt-gcs.git</connection>
-        </scm>
-    }
+    developers := List(
+      Developer(
+        id = "pcejrowski",
+        name = "Paweł Cejrowski",
+        email = "pawel.cejrowski@tapad.com",
+        url = url("http://github.com/pcejrowski")
+      )
+    ),
+    scmInfo := Some(
+      ScmInfo(
+        url("https://github.com/Tapad/sbt-gcs"),
+        "scm:git:git://github.com/Tapad/sbt-gcs.git"
+      )
+    )
   )
 
   val ReleaseSettings = Seq(
