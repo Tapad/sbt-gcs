@@ -6,14 +6,19 @@ import com.google.cloud.storage._
 import sbt.Logger
 
 object GcsUtils {
-  def upload(log: Logger, artifact: File, projectId: String, bucketName: String, blobName: String, overwrite: Boolean, mimeType: String): Unit = {
-    log.info(s"Uploading ${artifact.getAbsolutePath}...")
-    val bucket = Storage(projectId).getOrCreateBucket(bucketName)
-    bucket.getBlobOpt(blobName) match {
-      case Some(b) if !overwrite => sys.error(s"Cannot overwrite existing Blob: ${b.getLocation}")
-      case _ =>
-        val b = bucket.createBlob(blobName, artifact, mimeType)
-        log.info(s"Uploaded into ${b.getLocation}")
+  def upload(log: Logger, projectId: String, source: File, destination: String, overwrite: Boolean, mimeType: String): Unit = {
+    log.info(s"Uploading ${source.getAbsolutePath}...")
+    val regex = "gs://([^/]+)/(.+)".r
+    destination match {
+      case regex(bucketName, blobName) =>
+        val bucket = Storage(projectId).getOrCreateBucket(bucketName)
+        bucket.getBlobOpt(blobName) match {
+          case Some(b) if !overwrite => sys.error(s"Cannot overwrite existing Blob: ${b.getLocation}")
+          case _ =>
+            val b = bucket.createBlob(blobName, source, mimeType)
+            log.info(s"Uploaded into ${b.getLocation}")
+        }
+      case _ => sys.error(s"Destination has to match $regex, but is $destination instead")
     }
   }
 
