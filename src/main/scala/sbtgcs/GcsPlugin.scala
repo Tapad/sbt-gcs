@@ -42,14 +42,14 @@ object GcsPlugin extends AutoPlugin {
     },
     publish := {
       val _ = (packageBin in Gcs).value
-      val localPath = gcsLocalArtifactPath.value
-      val remotePath = gcsArtifactPath.value
+      val source = gcsLocalArtifactPath.value
+      val destination = gcsArtifactPath.value
       val log = streams.value.log
       try {
-        upload(log, localPath, gcsProjectId.value, gcsBucket.value, gcsBlobName.value, gcsOverwrite.value, gcsMimeType.value)
+        upload(log, gcsProjectId.value, source, destination, gcsOverwrite.value, gcsMimeType.value)
       } catch {
         case e: Exception =>
-          sys.error(s"Could not publish $localPath to $remotePath: " + ErrorHandling.reducedToString(e))
+          sys.error(s"Could not publish $source to $destination: " + ErrorHandling.reducedToString(e))
       }
     }
   )
