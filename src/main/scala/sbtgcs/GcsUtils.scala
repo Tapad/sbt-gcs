@@ -6,13 +6,13 @@ import com.google.cloud.storage._
 import sbt.Logger
 
 object GcsUtils {
-  def upload(log: Logger, artifact: File, projectId: String, bucketName: String, blobName: String, overwrite: Boolean): Unit = {
+  def upload(log: Logger, artifact: File, projectId: String, bucketName: String, blobName: String, overwrite: Boolean, mimeType: String): Unit = {
     log.info(s"Uploading ${artifact.getAbsolutePath}...")
     val bucket = Storage(projectId).getOrCreateBucket(bucketName)
     bucket.getBlobOpt(blobName) match {
       case Some(b) if !overwrite => sys.error(s"Cannot overwrite existing Blob: ${b.getLocation}")
       case _ =>
-        val b = bucket.createBlob(blobName, artifact, "application/java-archive")
+        val b = bucket.createBlob(blobName, artifact, mimeType)
         log.info(s"Uploaded into ${b.getLocation}")
     }
   }
