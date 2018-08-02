@@ -14,6 +14,7 @@ object GcsPlugin extends AutoPlugin {
     val gcsBucket = GcsKeys.gcsBucket
     val gcsBlobName = GcsKeys.gcsBlobName
     val gcsOverwrite = GcsKeys.gcsOverwrite
+    val gcsMimeType = GcsKeys.gcsMimeType
     val gcsArtifactPath = GcsKeys.gcsArtifactPath
   }
 
@@ -26,6 +27,7 @@ object GcsPlugin extends AutoPlugin {
     gcsLocalArtifactPath := (artifactPath in (Compile, packageBin)).value,
     gcsBlobName := gcsBlobName.?.value.getOrElse(blobName(organization.value, name.value, version.value)),
     gcsOverwrite := gcsOverwrite.?.value.getOrElse(false),
+    gcsMimeType := gcsMimeType.?.value.getOrElse("application/java-archive"),
     gcsArtifactPath := gcsArtifactPath.?.value.getOrElse(s"gs://${gcsBucket.value}/${gcsBlobName.value}")
   )
 
@@ -44,7 +46,7 @@ object GcsPlugin extends AutoPlugin {
       val remotePath = gcsArtifactPath.value
       val log = streams.value.log
       try {
-        upload(log, localPath, gcsProjectId.value, gcsBucket.value, gcsBlobName.value, gcsOverwrite.value)
+        upload(log, localPath, gcsProjectId.value, gcsBucket.value, gcsBlobName.value, gcsOverwrite.value, gcsMimeType.value)
       } catch {
         case e: Exception =>
           sys.error(s"Could not publish $localPath to $remotePath: " + ErrorHandling.reducedToString(e))

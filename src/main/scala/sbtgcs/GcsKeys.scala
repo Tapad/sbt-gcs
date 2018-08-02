@@ -9,6 +9,7 @@ object GcsKeys {
   val gcsProjectId = settingKey[String]("The Google Cloud Storage project ID")
   val gcsBucket = settingKey[String]("The Google Cloud Storage bucket")
   val gcsBlobName = settingKey[String]("The Google Cloud Storage artifact BLOB name")
-  val gcsOverwrite = settingKey[Boolean]("Specifies whether to overwrite BLOB if exists")
+  val gcsOverwrite = settingKey[Boolean]("Specifies whether to overwrite BLOB if exists, default: false")
+  val gcsMimeType = settingKey[String]("Specifies the MIME type of the uploaded file, default: application/java-archive")
   val gcsArtifactPath = taskKey[String]("The GCS path where an artifact will be published")
 }
