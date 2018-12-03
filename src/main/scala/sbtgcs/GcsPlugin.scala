@@ -21,22 +21,21 @@ object GcsPlugin extends AutoPlugin {
   import GcsUtils._
   import autoImport._
 
-  override def projectSettings: Seq[Def.Setting[_]] = defaultSettings ++ requiredSettings ++ inConfig(Gcs)(scopedSettings)
+  val configurations: Seq[Configuration] = Seq(Gcs, IntegrationTest, Test)
+
+  override def projectSettings: Seq[Def.Setting[_]] = defaultSettings ++ configurations.flatMap(inConfig(_)(scopedSettings))
 
   lazy val defaultSettings = Seq(
     gcsLocalArtifactPath := (artifactPath in (Compile, packageBin)).value,
     gcsBlobName := gcsBlobName.?.value.getOrElse(blobName(organization.value, name.value, version.value)),
     gcsOverwrite := gcsOverwrite.?.value.getOrElse(false),
-    gcsMimeType := gcsMimeType.?.value.getOrElse("application/java-archive"),
-    gcsArtifactPath := gcsArtifactPath.?.value.getOrElse(s"gs://${gcsBucket.value}/${gcsBlobName.value}")
-  )
-
-  lazy val requiredSettings = Seq(
-    gcsProjectId := sys.error("The Google Cloud project ID is not defined. Please declare a value for the `gcsProjectId` setting."),
-    gcsBucket := sys.error("The Google Cloud Storage bucket is not defined. Please declare a value for the `gcsBucket` setting.")
+    gcsMimeType := gcsMimeType.?.value.getOrElse("application/java-archive")
   )
 
   lazy val scopedSettings = Seq(
+    gcsProjectId := gcsProjectId.?.value.getOrElse(sys.error("The Google Cloud project ID is not defined. Please declare a value for the `gcsProjectId` setting.")),
+    gcsBucket := gcsBucket.?.value.getOrElse(sys.error("The Google Cloud Storage bucket is not defined. Please declare a value for the `gcsBucket` setting.")),
+    gcsArtifactPath := gcsArtifactPath.?.value.getOrElse(s"gs://${gcsBucket.value}/${gcsBlobName.value}"),
     packageBin := {
       (packageBin in Compile).value
     },
