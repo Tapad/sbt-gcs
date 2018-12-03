@@ -7,7 +7,6 @@ import sbt.Logger
 
 object GcsUtils {
   def upload(log: Logger, projectId: String, source: File, destination: String, overwrite: Boolean, mimeType: String): Unit = {
-    log.info(s"Uploading ${source.getAbsolutePath}...")
     val regex = "gs://([^/]+)/(.+)".r
     destination match {
       case regex(bucketName, blobName) =>
@@ -15,6 +14,7 @@ object GcsUtils {
         bucket.getBlobOpt(blobName) match {
           case Some(b) if !overwrite => sys.error(s"Cannot overwrite existing Blob: ${b.getLocation}")
           case _ =>
+            log.info(s"Uploading ${source.getAbsolutePath} to gs://$bucketName/$blobName ...")
             val b = bucket.createBlob(blobName, source, mimeType)
             log.info(s"Uploaded into ${b.getLocation}")
         }
