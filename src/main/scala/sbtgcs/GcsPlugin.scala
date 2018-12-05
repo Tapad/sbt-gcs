@@ -21,9 +21,9 @@ object GcsPlugin extends AutoPlugin {
   import GcsUtils._
   import autoImport._
 
-  val configurations: Seq[Configuration] = Seq(Gcs, IntegrationTest, Test)
+  val configurations: Seq[Configuration] = Seq(Gcs, IntegrationTest)
 
-  override def projectSettings: Seq[Def.Setting[_]] = defaultSettings ++ configurations.flatMap(inConfig(_)(scopedSettings))
+  override def projectSettings: Seq[Def.Setting[_]] = defaultSettings ++ configurations.flatMap(c => inConfig(c)(scopedSettings(c)))
 
   lazy val defaultSettings = Seq(
     gcsLocalArtifactPath := (artifactPath in (Compile, packageBin)).value,
@@ -32,17 +32,17 @@ object GcsPlugin extends AutoPlugin {
     gcsMimeType := gcsMimeType.?.value.getOrElse("application/java-archive")
   )
 
-  lazy val scopedSettings = Seq(
-    gcsProjectId := gcsProjectId.?.value.getOrElse(sys.error("The Google Cloud project ID is not defined. Please declare a value for the `gcsProjectId` setting.")),
-    gcsBucket := gcsBucket.?.value.getOrElse(sys.error("The Google Cloud Storage bucket is not defined. Please declare a value for the `gcsBucket` setting.")),
-    gcsArtifactPath := gcsArtifactPath.?.value.getOrElse(s"gs://${gcsBucket.value}/${gcsBlobName.value}"),
+  def scopedSettings(conf: Configuration) = Seq(
+    gcsProjectId := (gcsProjectId in conf).?.value.getOrElse(sys.error("The Google Cloud project ID is not defined. Please declare a value for the `gcsProjectId` setting.")),
+    gcsBucket := (gcsBucket in conf).?.value.getOrElse(sys.error("The Google Cloud Storage bucket is not defined. Please declare a value for the `gcsBucket` setting.")),
+    gcsArtifactPath := (gcsArtifactPath in conf).?.value.getOrElse(s"gs://${(gcsBucket in conf).value}/${(gcsBlobName in conf).value}"),
     packageBin := {
       (packageBin in Compile).value
     },
     publish := {
       val _ = (packageBin in Gcs).value
       val source = gcsLocalArtifactPath.value
-      val destination = gcsArtifactPath.value
+      val destination = (gcsArtifactPath in conf).value
       val log = streams.value.log
       try {
         upload(log, gcsProjectId.value, source, destination, gcsOverwrite.value, gcsMimeType.value)
