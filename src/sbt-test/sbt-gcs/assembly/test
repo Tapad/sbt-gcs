@@ -1,2 +1,3 @@
 > gcsLocalArtifactPath
-> gcsArtifactPath
+> gcs:gcsArtifactPath
+> it:gcsArtifactPath
