@@ -75,6 +75,14 @@ Once the build definition is configured properly, an invocation of `gcs:publish`
 
 For more information, refer to the documentation provided by [sbt-assembly](https://github.com/sbt/sbt-assembly) and the scripted integration test found at [plugin/src/sbt-test/sbt-hadoop/assembly](plugin/src/sbt-test/sbt-hadoop/assembly).
 
+### IntegrationTest scope
+
+Artifacts can be published to another project and bucket for integration tests using scopes.
+```
+gcsProjectId in IntegrationTest := "my-google-cloud-it-project"
+gcsBucket in IntegrationTest := "gcs-it-bucket.tapad.com"
+```
+
 ## Contributing
 
 #### root
