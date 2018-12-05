@@ -31,8 +31,8 @@ enablePlugins(GcsPlugin)
 and set required settings:
 
 ```
-gcsProjectId := "my-google-cloud-project"
-gcsBucket := "gcs-bucket.tapad.com"
+gcsProjectId in Gcs := "my-google-cloud-project"
+gcsBucket in Gcs := "gcs-bucket.tapad.com"
 ```
 
 The location on GCS can be specfied using `gcsArtifactPath` setting. The default value is:
@@ -58,8 +58,8 @@ addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
 
 ```
 gcsLocalArtifactPath := (assemblyOutputPath in assembly).value
-gcsProjectId := "my-google-cloud-project"
-gcsBucket := "gcs-bucket.tapad.com"
+gcsProjectId in Gcs := "my-google-cloud-project"
+gcsBucket in Gcs := "gcs-bucket.tapad.com"
 publish in Gcs := (publish in Gcs).dependsOn(assembly).value
 ```
 
