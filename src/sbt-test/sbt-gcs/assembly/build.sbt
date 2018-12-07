@@ -6,10 +6,10 @@ version := "0.1.0"
 
 assemblyJarName in assembly := s"${name.value}-${version.value}.jar"
 
-gcsProjectId in Gcs := "my-google-cloud-project"
+gcsProjectId := "my-google-cloud-project"
 gcsProjectId in IntegrationTest := "my-google-cloud-it-project"
 
-gcsBucket in Gcs := "gcs-bucket.tapad.com"
+gcsBucket := "gcs-bucket.tapad.com"
 gcsBucket in IntegrationTest  := "gcs-it-bucket.tapad.com"
 
 gcsLocalArtifactPath := (assemblyOutputPath in assembly).value
