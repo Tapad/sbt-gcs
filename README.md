@@ -31,8 +31,8 @@ enablePlugins(GcsPlugin)
 and set required settings:
 
 ```
-gcsProjectId in Gcs := "my-google-cloud-project"
-gcsBucket in Gcs := "gcs-bucket.tapad.com"
+gcsProjectId := "my-google-cloud-project"
+gcsBucket := "gcs-bucket.tapad.com"
 ```
 
 The location on GCS can be specfied using `gcsArtifactPath` setting. The default value is:
@@ -58,9 +58,9 @@ addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
 
 ```
 gcsLocalArtifactPath := (assemblyOutputPath in assembly).value
-gcsProjectId in Gcs := "my-google-cloud-project"
-gcsBucket in Gcs := "gcs-bucket.tapad.com"
-publish in Gcs := (publish in Gcs).dependsOn(assembly).value
+gcsProjectId := "my-google-cloud-project"
+gcsBucket := "gcs-bucket.tapad.com"
+publish := publish.dependsOn(assembly).value
 ```
 
 Lastly, be sure to enable sbt-gcs in your `build.sbt` file:
@@ -79,8 +79,10 @@ For more information, refer to the documentation provided by [sbt-assembly](http
 
 Artifacts can be published to another project and bucket for integration tests using scopes.
 ```
-gcsProjectId in IntegrationTest := "my-google-cloud-it-project"
-gcsBucket in IntegrationTest := "gcs-it-bucket.tapad.com"
+inConfig(IntegrationTest)(GcsPlugin.baseSettings ++ Seq(
+    gcsProjectId := "my-google-cloud-it-project",
+    gcsBucket := "gcs-it-bucket.tapad.com"
+)
 ```
 
 ## Contributing
