@@ -1,12 +1,11 @@
 package sbtgcs
 
-import sbt.Keys._
+import sbt.Keys.{publish, _}
 import sbt.{Def, _}
 
 object GcsPlugin extends AutoPlugin {
 
   object autoImport {
-    val Gcs = config("gcs").extend(Compile)
     val GcsKeys = sbtgcs.GcsKeys
     val GcsUtils = sbtgcs.GcsUtils
     val gcsLocalArtifactPath = GcsKeys.gcsLocalArtifactPath
@@ -21,27 +20,19 @@ object GcsPlugin extends AutoPlugin {
   import GcsUtils._
   import autoImport._
 
-  override def projectSettings: Seq[Def.Setting[_]] = defaultSettings ++ requiredSettings ++ inConfig(Gcs)(scopedSettings)
+  override def projectSettings: Seq[Def.Setting[_]] = baseSettings
 
-  lazy val defaultSettings = Seq(
-    gcsLocalArtifactPath := (artifactPath in (Compile, packageBin)).value,
-    gcsBlobName := gcsBlobName.?.value.getOrElse(blobName(organization.value, name.value, version.value)),
-    gcsOverwrite := gcsOverwrite.?.value.getOrElse(false),
-    gcsMimeType := gcsMimeType.?.value.getOrElse("application/java-archive"),
-    gcsArtifactPath := gcsArtifactPath.?.value.getOrElse(s"gs://${gcsBucket.value}/${gcsBlobName.value}")
+  lazy val baseSettings = defaultSettings ++ dependentSettings ++ publishSettings
+
+  lazy val dependentSettings = Seq(
+    gcsLocalArtifactPath := (artifactPath in(Compile, packageBin)).value,
+    gcsArtifactPath  := s"gs://${gcsBucket.value}/${gcsBlobName.value}"
   )
 
-  lazy val requiredSettings = Seq(
-    gcsProjectId := sys.error("The Google Cloud project ID is not defined. Please declare a value for the `gcsProjectId` setting."),
-    gcsBucket := sys.error("The Google Cloud Storage bucket is not defined. Please declare a value for the `gcsBucket` setting.")
-  )
-
-  lazy val scopedSettings = Seq(
-    packageBin := {
-      (packageBin in Compile).value
-    },
+  lazy val publishSettings = Seq(
+    packageBin := (packageBin in Compile).value,
     publish := {
-      val _ = (packageBin in Gcs).value
+      val _ = packageBin.value
       val source = gcsLocalArtifactPath.value
       val destination = gcsArtifactPath.value
       val log = streams.value.log
@@ -53,4 +44,11 @@ object GcsPlugin extends AutoPlugin {
       }
     }
   )
+
+  lazy val defaultSettings = Seq(
+    gcsBlobName := blobName(organization.value, name.value, version.value),
+    gcsOverwrite := false,
+    gcsMimeType := "application/java-archive"
+  )
+
 }

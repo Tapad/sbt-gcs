@@ -60,7 +60,7 @@ addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
 gcsLocalArtifactPath := (assemblyOutputPath in assembly).value
 gcsProjectId := "my-google-cloud-project"
 gcsBucket := "gcs-bucket.tapad.com"
-publish in Gcs := (publish in Gcs).dependsOn(assembly).value
+publish := publish.dependsOn(assembly).value
 ```
 
 Lastly, be sure to enable sbt-gcs in your `build.sbt` file:
@@ -74,6 +74,16 @@ sbt-assembly will be enabled automatically.
 Once the build definition is configured properly, an invocation of `gcs:publish` will build and subsequentially publish a fat jar to GCS.
 
 For more information, refer to the documentation provided by [sbt-assembly](https://github.com/sbt/sbt-assembly) and the scripted integration test found at [plugin/src/sbt-test/sbt-hadoop/assembly](plugin/src/sbt-test/sbt-hadoop/assembly).
+
+### IntegrationTest scope
+
+Artifacts can be published to another project and bucket for integration tests using scopes.
+```
+inConfig(IntegrationTest)(GcsPlugin.baseSettings ++ Seq(
+    gcsProjectId := "my-google-cloud-it-project",
+    gcsBucket := "gcs-it-bucket.tapad.com"
+)
+```
 
 ## Contributing
 
