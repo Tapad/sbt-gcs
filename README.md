@@ -9,7 +9,7 @@ It is highly inspired by [Tapad/sbt-hadoop](https://github.com/tapad/sbt-hadoop-
 Add the following line to `project/plugins.sbt`. See the [Using plugins](http://www.scala-sbt.org/release/docs/Using-Plugins.html) section of the sbt documentation for more information.
 
 ```
-addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.1")
+addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.2.0")
 ```
 
 ### Credentials
@@ -53,7 +53,7 @@ To use sbt-gcs in conjunction with sbt-assembly, add the following to your `proj
 
 ```
 addSbtPlugin("com.eed3sign" % "sbt-assembly" % "X.Y.Z")
-addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.1.0")
+addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.2.0")
 ```
 
 ```
