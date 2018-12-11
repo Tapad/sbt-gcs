@@ -1,4 +1,6 @@
 # sbt-gcs
+[ ![Bintray](https://api.bintray.com/packages/tapad-oss/sbt-plugins/sbt-gcs/images/download.svg) ](https://bintray.com/tapad-oss/sbt-plugins/sbt-gcs/_latestVersion)
+
 An [sbt](http://scala-sbt.org) plugin for publishing artifacts to [Google Cloud Storage](https://cloud.google.com/storage/).
 It is highly inspired by [Tapad/sbt-hadoop](https://github.com/tapad/sbt-hadoop-oss) plugin.
 
@@ -9,8 +11,9 @@ It is highly inspired by [Tapad/sbt-hadoop](https://github.com/tapad/sbt-hadoop-
 Add the following line to `project/plugins.sbt`. See the [Using plugins](http://www.scala-sbt.org/release/docs/Using-Plugins.html) section of the sbt documentation for more information.
 
 ```
-addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.2.0")
+addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % SbtGcsVersion)
 ```
+where `SbtGcsVersion` should be taken from badge at the top.
 
 ### Credentials
 Authentication to Google Cloud Storage has to be provided. The following are searched (in order) to find the Application Default Credentials:
@@ -53,7 +56,7 @@ To use sbt-gcs in conjunction with sbt-assembly, add the following to your `proj
 
 ```
 addSbtPlugin("com.eed3sign" % "sbt-assembly" % "X.Y.Z")
-addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % "0.2.0")
+addSbtPlugin("com.tapad.sbt" % "sbt-gcs" % SbtGcsVersion)
 ```
 
 ```
