@@ -1,8 +1,8 @@
 object Dependencies {
 
-  val ScalaTestVersion = "3.0.1"
+  val ScalaTestVersion = "3.2.5"
 
-  val SLF4JVersion = "1.7.25"
+  val SLF4JVersion = "1.7.30"
 
-  val GcsClientVersion = "1.26.0"
+  val GcsClientVersion = "1.113.13"
 }

@@ -20,7 +20,7 @@ libraryDependencies ++= Seq(
   "com.google.cloud"    % "google-cloud-storage" % GcsClientVersion
 )
 
-scriptedSettings
+enablePlugins(SbtPlugin)
 
 scriptedLaunchOpts ++= Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 

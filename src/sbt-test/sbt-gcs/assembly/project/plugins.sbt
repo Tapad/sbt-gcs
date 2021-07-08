@@ -1,4 +1,4 @@
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.6")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.15.0")
 
 {
   sys.props.get("plugin.version") match {
